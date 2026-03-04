@@ -22,10 +22,10 @@ theme:
         icon: material/brightness-7
         name: Switch to dark mode
   features:
-    - navigation.tabs
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - navigation.indexes
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -55,6 +55,7 @@ extra_javascript:
 nav:
   - Home: index.md
   - Setup:
+    - Overview: setup/overview.md
     - Ubuntu & CUDA: setup/ubuntu.md
     - Python & uv: setup/python.md
     - Project Structure: setup/project.md
