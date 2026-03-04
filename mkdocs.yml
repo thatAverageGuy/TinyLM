@@ -1,0 +1,77 @@
+site_name: TinyLM
+site_description: Building a language model from scratch — tokenizer to CUDA kernels
+site_author: thatAverageGuy
+site_url: https://thataverageguy.github.io/TinyLM
+repo_url: https://github.com/thatAverageGuy/TinyLM
+repo_name: thatAverageGuy/TinyLM
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  - md_in_html
+  - tables
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Setup:
+    - Ubuntu & CUDA: setup/ubuntu.md
+    - Python & uv: setup/python.md
+    - Project Structure: setup/project.md
+  - Phase 0 — Pure Python:
+    - Overview: phase0/overview.md
+    - Tokenizer: phase0/tokenizer.md
+    - Model: phase0/model.md
+    - Inference: phase0/inference.md
+  - Phase 0.1 — Manual Autograd:
+    - Overview: phase01/overview.md
+  - Phase 0.2 — NumPy + PyTorch Autograd:
+    - Overview: phase02/overview.md
+  - Phase 0.3 — PyTorch Manual:
+    - Overview: phase03/overview.md
+  - Phase 0.4 — PyTorch Proper:
+    - Overview: phase04/overview.md
+  - Phase 1 — Modernization:
+    - Overview: phase1/overview.md
+  - Phase 2 — Hardware:
+    - Overview: phase2/overview.md
