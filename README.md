@@ -16,7 +16,11 @@ Each phase is implemented naively first, then profiled, then optimized. Nothing 
 
 - A naive implementation from scratch using basic Python. → [`experiments/tokenizer/bpe/2-Naive_BPE.ipynb`](experiments/tokenizer/bpe/2-Naive_BPE.ipynb)
 
+- Naive BPE extended with punctuation handling. → [`experiments/tokenizer/bpe/3-Naive_BPE_with_punctuation.ipynb`](experiments/tokenizer/bpe/3-Naive_BPE_with_punctuation.ipynb)
+
 ### Naive BPE — What's implemented
+
+Python script for this lives at [`tinylm/tokenizer/naive_bpe.py`](tinylm/tokenizer/naive_bpe.py).
 
 - `char_spaced_word_freq()` — converts raw text into character-spaced word frequency dict with `</w>` end-of-word markers
 - `bigram_pair_freq()` — counts bigram pair frequencies weighted by word frequency
@@ -29,15 +33,23 @@ Each phase is implemented naively first, then profiled, then optimized. Nothing 
 **Design decisions:**
 - Uses `</w>` end-of-word marker (original paper convention) instead of leading-space convention (GPT-2 style)
 - Case-sensitive
+- Punctuation isolated as standalone tokens via space insertion before pre-tokenization (`functools.reduce` over `string.punctuation`)
 - Space-split pre-tokenization (no regex)
 - Special tokens: `[UNK]=0, [PAD]=1, [BOS]=2, [EOS]=3`
 - Merge rules saved as plain text, one pair per line, in merge order
 - Vocab saved as JSON
 
+**Known limitations of naive punctuation handling:**
+- Contractions split aggressively: `don't` → `don`, `'`, `t`
+- Abbreviations split at every dot: `U.S.A.` → `U`, `.`, `S`, `.`, `A`, `.`
+- These are intentional — the production BPE (GPT-2 style regex pre-tokenization) will handle these correctly
+
 **Verified:**
 - Full encode → decode roundtrip reconstructs original text exactly
 - OOV characters correctly map to `[UNK]`
 - Merge rule replay during encode is consistent with training
+- Punctuation appears as standalone vocab entries, not fused to adjacent words
+- No ghost tokens from consecutive spaces
 
 ---
 
@@ -59,7 +71,7 @@ Each phase is implemented naively first, then profiled, then optimized. Nothing 
 
 ```
 tinylm/
-├── tokenizer/       # BPE tokenizer
+├── tokenizer/       # Tokenizer implementations
 ├── model/           # Transformer architecture
 ├── training/        # Training loop
 ├── inference/       # Inference + sampling
@@ -71,9 +83,9 @@ tests/
 ├── training/
 └── inference/
 
-experiments/         # Notebooks — one per iterative refinement, 
+experiments/         # Notebooks — one per iterative refinement
 data/
-├── raw/
+├── raw/             # Raw datasets (gitignored, see data/raw/README.md)
 └── processed/
 
 docs/                # MkDocs documentation (live at thataverageguy.github.io/TinyLM)
